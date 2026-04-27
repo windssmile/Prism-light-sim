@@ -14,3 +14,15 @@ npm run dev
 npm run test
 npm run build
 ```
+
+## 项目结构
+
+- `src/optics/` — 与 Three.js 解耦的物理纯函数（Sellmeier、Snell、波长→RGB、光线追踪），单测覆盖
+- `src/scene/` — 棱镜、屏、舞台（Bloom 后处理）
+- `src/render/` — 体积光段与光谱扇面
+- `src/controls/` — 相机轨道控制
+- `tests/` — vitest 单测
+
+## 部署
+
+`npm run build` 产出 `dist/`，纯静态文件可直接部署到 GitHub Pages、Vercel、Netlify 等。`vite.config.ts` 中 `base: './'` 已就绪，子路径部署也可用。
