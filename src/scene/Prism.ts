@@ -31,7 +31,7 @@ export function createPrism(): {
 
   const material = new MeshPhysicalMaterial({
     transmission: 1,
-    ior: 1.52,
+    ior: 1.73,
     roughness: 0,
     thickness: 1,
     metalness: 0,

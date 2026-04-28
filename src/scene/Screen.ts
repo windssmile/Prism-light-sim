@@ -1,9 +1,9 @@
 import { Mesh, MeshStandardMaterial, PlaneGeometry } from 'three';
 
-export const SCREEN_X = 5;
+export const SCREEN_X = 7;
 
 export function createScreen(): Mesh {
-  const geometry = new PlaneGeometry(4, 3);
+  const geometry = new PlaneGeometry(6, 5);
   const material = new MeshStandardMaterial({
     color: 0xffffff,
     roughness: 0.9,

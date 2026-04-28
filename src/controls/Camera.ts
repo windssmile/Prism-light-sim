@@ -16,6 +16,10 @@ export function createCamera(renderer: WebGLRenderer): {
   controls.maxDistance = 15;
   controls.maxPolarAngle = Math.PI * 0.6;
   controls.target.set(0, 0, 0);
+  controls.enablePan = true;
+  controls.screenSpacePanning = true;
+  controls.keyPanSpeed = 10;
+  controls.listenToKeyEvents(window);
 
   return { camera, controls };
 }

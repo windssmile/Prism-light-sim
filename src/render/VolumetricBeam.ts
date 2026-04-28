@@ -1,5 +1,6 @@
 import {
   AdditiveBlending,
+  Group,
   Mesh,
   PlaneGeometry,
   ShaderMaterial,
@@ -32,28 +33,35 @@ export function createBeamSegment(
   end: Vector3,
   color: [number, number, number],
   intensity: number,
-  thickness = 0.06,
-): Mesh {
+  thickness = 0.08,
+): Group {
   const length = start.distanceTo(end);
-  const geometry = new PlaneGeometry(length, thickness);
-  const material = new ShaderMaterial({
-    vertexShader,
-    fragmentShader,
-    uniforms: {
-      uColor: { value: color },
-      uIntensity: { value: intensity },
-    },
-    transparent: true,
-    depthWrite: false,
-    blending: AdditiveBlending,
-  });
-  const mesh = new Mesh(geometry, material);
-
-  const mid = start.clone().add(end).multiplyScalar(0.5);
-  mesh.position.copy(mid);
   const dir = end.clone().sub(start).normalize();
+  const mid = start.clone().add(end).multiplyScalar(0.5);
   const xAxis = new Vector3(1, 0, 0);
-  mesh.quaternion.setFromUnitVectors(xAxis, dir);
 
-  return mesh;
+  const group = new Group();
+  group.position.copy(mid);
+  group.quaternion.setFromUnitVectors(xAxis, dir);
+
+  // 两片正交平面（XY + XZ），任意视角都能看到光柱厚度
+  for (let i = 0; i < 2; i++) {
+    const geometry = new PlaneGeometry(length, thickness);
+    const material = new ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        uColor: { value: color },
+        uIntensity: { value: intensity },
+      },
+      transparent: true,
+      depthWrite: false,
+      blending: AdditiveBlending,
+    });
+    const mesh = new Mesh(geometry, material);
+    if (i === 1) mesh.rotation.x = Math.PI / 2;
+    group.add(mesh);
+  }
+
+  return group;
 }
